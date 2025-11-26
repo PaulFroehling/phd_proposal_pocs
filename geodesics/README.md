@@ -1,8 +1,8 @@
 
-## Calculate_Geodesic Doku
-The following is an explanation of the function def calculate_geodesic results from the derivative in geodesics/doku/Research_Proposal-4.pdf
+## Calculate_Geodesic 
+The following is an explanation of the function "calculate_geodesic" resulting from the derivative in "geodesics/doku/Derivation_S2Geodesics.pdf"
 
-The final function in the derivation before numeric integration is: 
+The final equation of the derivation before numeric integration is: 
 $$\frac{ds}{d \phi} = R \sqrt{(\alpha cos \phi + \beta sin\phi)^2 sin^4\theta + sin^2\theta}$$
 
 First step: Calculate $\alpha$ and $\beta$
@@ -16,5 +16,9 @@ $$\beta = \frac{cot \theta_2 sin \phi_1 - cot \theta_1 \sin \phi_2}{sin(\phi_1 -
 
 The $\alpha$ and $\beta$ term that follws in calculate_geodesic is the first bracket in the $\frac{ds}{d\phi}$
 
-$sin \theta$ is defined as:
+Furthermore $sin \theta$ needs to be calculated, defined as:
 $$sin \theta = \frac{1}{\sqrt{\alpha sin \phi - \beta cos \phi)^2 + 1}}$$
+
+Since the resulting formular is hard to integrate analytically (if even possible), I have used the trapecoidal rule for numerical integration. This divides the range, that needs to be integrated into n blocks, of equal size (leading to a blockwidth of $\Delta x$) and returns n results, being cumulated sums from zero to i, where the last result is the cumulated sum from zero to n. 
+
+Trapecoidal Rule:$$ \frac{\Delta \phi}{2}[f(\phi_0) + 2f(\phi_1) + 2f(\phi_2) + ... + 2f(\phi_{n-1}) + f(\phi_{n})]$$
