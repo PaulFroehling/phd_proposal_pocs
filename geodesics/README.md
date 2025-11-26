@@ -6,8 +6,8 @@ The final equation of the derivation before numeric integration is:
 $$\frac{ds}{d \phi} = R \sqrt{(\alpha cos \phi + \beta sin\phi)^2 sin^4\theta + sin^2\theta}$$
 
 First step: Calculate $\alpha$ and $\beta$
-$$\alpha = A cos \phi'$$
 
+$$\alpha = A cos \phi'$$
 $$\alpha = A sin \phi'$$
 
 $\alpha$ and $\beta$ are summarized factors for x and y, which can be computed via Cramers rule in the full derviation, which results in:
