@@ -10,7 +10,8 @@ First step: Calculate $\alpha$ and $\beta$
 $$\alpha = A cos \phi'$$
 $$\alpha = A sin \phi'$$
 
-$\alpha$ and $\beta$ are summarized factors for x and y, which can be computed via Cramers rule in the full derviation, which results in:
+$\alpha$ and $\beta$ are summarized factors for x and y, which can be computed via Cramers rule (see full derivation), which results in:
+
 $$\alpha = \frac{cot \theta_1 cos \phi_2 - cot \theta_2 \cos \phi_1}{sin(\phi_1 - \phi_2)}$$
 $$\beta = \frac{cot \theta_2 sin \phi_1 - cot \theta_1 \sin \phi_2}{sin(\phi_1 - \phi_2)}$$
 
