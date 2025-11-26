@@ -1,23 +1,34 @@
-import math
 from scipy.integrate import cumulative_trapezoid
-import scipy.special as special
 import numpy as np
 from numpy import sin, cos, tan, arctan, pi
 import matplotlib.pyplot as plt
-from scipy.spatial.distance import cosine
 
 class s2_geodesic():
     def __init__(self):
         pass
 
-    def calculate_geodesic(self, phi_1:float, phi_2:float, theta_1:float, theta_2:float, R:int, n_points:int=100) -> np.ndarray:
-        '''Calculate the geodesic between two points based on the solution from Euler-Lagrange $x_1$ '''
+    def calculate_geodesic(self, phi_1:float, phi_2:float, theta_1:float, theta_2:float, R:float, n_points:int=100) -> np.ndarray:
+        '''Calculate the geodesic between two points based on the solution from Euler-Lagrange, documented in the doku-folder 
+        For integrating cumulative_trapezoid from scipy is used, to get different points along the geodesic between theta_1, phi_1, theta_2, phi_2
+        
+        Args:
+            - phi_1 (float): Phi value of the starting points
+            - theta_1 (float): Theta value of the starting point
+            - phi_2 (float): Phi value of the target point
+            - theta_2 (float): Theta value of the target point
+            - R (float): Radius of the sphere
+            - n_points (int): Number of points being calculated between start and target
+        Returns
+            - geodesics (np.ndarray): Resulting points on the geodesic
+        '''
         
         phi_vals = np.linspace(phi_1, phi_2, n_points) #Linearly interpolate between phi_1 and phi_2
         alpha, beta = self.calc_alpha(phi_1, phi_2, theta_1, theta_2), self.calc_beta(phi_1, phi_2, theta_1, theta_2)
+
+        #Since the plane has two sides, it needs to be checked on that the geodesic is on the correct side of the plane. 
         if abs(self.calc_theta(alpha, beta, phi_1) - theta_1) > abs(self.calc_theta(-alpha, -beta, phi_1) - theta_1):
             alpha, beta = -alpha, -beta
-        alpha_beta_term = alpha * cos(phi_vals) - beta * sin(phi_vals)
+        alpha_beta_term = alpha * cos(phi_vals) + beta * sin(phi_vals)
 
         sin_teta = 1/np.sqrt((alpha * sin(phi_vals) + beta * cos(phi_vals))**2 + 1)
         s = R * np.sqrt(alpha_beta_term**2 * sin_teta**4 + sin_teta**2)
@@ -32,29 +43,87 @@ class s2_geodesic():
 
         return np.array(geodesic)
 
-    def cot(self, x):
+    def cot(self, x:float) -> float:
+        '''
+        Utility function for cot
+
+        Args:
+            x (float): Input value 
+        Returns:
+            result (float): Resulting value for x
+        '''
         return 1/tan(x)
 
     def arccot(self, x):
+        '''
+        Utility function for cot
+        
+       Args:
+            x (float): Input value 
+        Returns:
+            result (float): Resulting value for x
+        '''
         return pi/2 - arctan(x)
 
 
-    def calc_alpha(self, phi1,phi2, theta1, theta2):
+    def calc_alpha(self, phi1:float, phi2:float, theta1:float, theta2:float) -> float:
+        '''Calculates the alpha factor
+
+        Args:
+            phi1 (float): Phi value of the starting points
+            phi2 (float): Phi value of the target points
+            theta1 (float): Theta value of the starting points
+            theta2 (float): Theta value of the target points
+
+        Returns:
+            float: Resulting alpha value
+        '''       
         return (self.cot(theta1) * cos(phi2) - self.cot(theta2) * cos(phi1)) / sin(phi1-phi2)
 
-    def calc_beta(self, phi1,phi2, theta1, theta2):
+
+    def calc_beta(self, phi1:float, phi2:float, theta1:float, theta2:float) -> float:
+        '''Calculates the beta factor
+
+        Args:
+            phi1 (float): Phi value of the starting points
+            phi2 (float): Phi value of the target points
+            theta1 (float): Theta value of the starting points
+            theta2 (float): Theta value of the target points
+
+        Returns:
+            float: Resulting beta value
+        '''     
         return (self.cot(theta2) * sin(phi1) - self.cot(theta1) * sin(phi2))/sin(phi1-phi2)
 
-    def calc_theta(self, alpha, beta, phi):
+    def calc_theta(self, alpha, beta, phi) -> tuple:
         return self.arccot(alpha * sin(phi) + beta * cos(phi))
 
-    def parameterform_s2(self, zenit, azimut, R):
+    def parameterform_s2(self, zenit:float, azimut:float, R:float):
+        """Calculates the R³ coordinates for given spherical polar coordinates
+
+        Args:
+            zenit (float): Value for zenit angle
+            azimut (float): Value for azimut angle
+            R (float): Radius
+
+        Returns:
+            tuple: Resulting coordinates in R³
+        """        
         x = R * sin(zenit) * cos(azimut)
         y = R * sin(zenit) * sin(azimut)
         z = R * cos(zenit)
         return x,y,z
     
-    def generate_sphere_data(self, n, r):
+    def generate_sphere_data(self, n:int, r:float) -> tuple[np.ndarray, np.ndarray]:
+        """Generates data on a 2-sphere
+
+        Args:
+            n (int): Number of samples
+            r (float): Radius of the sphere
+
+        Returns:
+            tuple[np.ndarray, np.ndarray]: Euclidean coordinates and spherical polar coordinates
+        """        
         zenit = np.linspace(0, pi, n)
         azimut = np.linspace(0, 2 * pi, n)
         zenit_m, azimut_m = np.meshgrid(zenit, azimut)
@@ -67,9 +136,17 @@ class s2_geodesic():
             sphere_coords.append([r, i, j])
 
         return np.array(eucl_coords), np.array(sphere_coords)
+    
 
     def create_3d_scatter_plot(self, data:np.ndarray, start_points:np.ndarray, end_points:np.ndarray, geodesics:np.ndarray) -> None:
-    
+        """Creates a 3D scatter plot of a sphere and geodesics
+
+        Args:
+            data (np.ndarray): Samples on the sphere - for visualizing the sphere
+            start_points (np.ndarray): Starting points of the geodesics
+            end_points (np.ndarray): Target points of the geodesics
+            geodesics (np.ndarray): Points along single geodesics
+        """        
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
     
@@ -91,6 +168,8 @@ class s2_geodesic():
 
     
     def example_function(self):
+        """Example for usage of s2.py
+        """        
         phi_1, theta_1 = 0.7 * pi, 0.4 * pi 
         phi_2, theta_2 = 2 * pi - 1.2 * pi, 0.8 * pi
 

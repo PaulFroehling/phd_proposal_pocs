@@ -1,14 +1,15 @@
 
 ## Calculate_Geodesic 
-The following is an explanation of the function "calculate_geodesic" resulting from the derivative in "geodesics/doku/Derivation_S2Geodesics.pdf"
+The following is a short explanation of the function calculate_geodesic, based on the derivation in
+geodesics/doku/Derivation_S2Geodesics.pdf.
 
-The final equation of the derivation before numeric integration is: 
+The final equation before numerical integration is:
 $$\frac{ds}{d \phi} = R \sqrt{(\alpha cos \phi + \beta sin\phi)^2 sin^4\theta + sin^2\theta}$$
 
 First step: Calculate $\alpha$ and $\beta$
 
 $$\alpha = A cos \phi'$$
-$$\alpha = A sin \phi'$$
+$$\beta = A sin \phi'$$
 
 $\alpha$ and $\beta$ are summarized factors for x and y, which can be computed via Cramers rule (see full derivation), which results in:
 
@@ -19,9 +20,12 @@ The $\alpha$ and $\beta$ term that follws in calculate_geodesic is the first bra
 
 Furthermore $sin \theta$ needs to be calculated, defined as:
 
-$$sin \theta = \frac{1}{\sqrt{\alpha sin \phi - \beta cos \phi)^2 + 1}}$$
+$$sin \theta = \frac{1}{\sqrt{(\alpha sin \phi - \beta cos \phi)^2 + 1}}$$
 
-Since the resulting formular is hard to integrate analytically (if even possible), I have used the trapecoidal rule for numerical integration. This divides the range, that needs to be integrated into n blocks, of equal size (leading to a blockwidth of $\Delta x$) and returns n results, being cumulated sums from zero to i, where the last result is the cumulated sum from zero to n. 
+Numerical integration
+
+Since the resulting expression is difficult (if not impossible) to integrate analytically, the trapezoidal rule is used.
+This divides the integration range into n equal interval of width $\Delta \phi$ and computes the cumulative integral:
 
 Trapecoidal Rule:
 
