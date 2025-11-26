@@ -11,7 +11,9 @@ class s2_geodesic():
         pass
 
     def calculate_geodesic(self, phi_1:float, phi_2:float, theta_1:float, theta_2:float, R:int, n_points:int=100) -> np.ndarray:
-        phi_vals = np.linspace(phi_1, phi_2, n_points)
+        '''Calculate the geodesic between two points based on the solution from Euler-Lagrange $x_1$ '''
+        
+        phi_vals = np.linspace(phi_1, phi_2, n_points) #Linearly interpolate between phi_1 and phi_2
         alpha, beta = self.calc_alpha(phi_1, phi_2, theta_1, theta_2), self.calc_beta(phi_1, phi_2, theta_1, theta_2)
         if abs(self.calc_theta(alpha, beta, phi_1) - theta_1) > abs(self.calc_theta(-alpha, -beta, phi_1) - theta_1):
             alpha, beta = -alpha, -beta
