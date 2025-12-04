@@ -303,8 +303,8 @@ def generate_training_data(n_geodesics:int, n_geodesic_points:int) -> tuple[tf.T
     for i in range(n_geodesics):
         ts = np.clip(np.random.random(n_geodesic_points),0,1)
         for t_idx, t in enumerate(ts):
-            v_t = compute_tangent_interpolation(start_dists_log[i], target_dists_log[i], t) #tangent vector
-            w_t = exp_map(barycenter, v_t) #w(t)
+            v_t = compute_tangent_interpolation(start_dists_log[i], target_dists_log[i], t) 
+            w_t = exp_map(barycenter, v_t)
             model_target = (target_dists_log[i] - start_dists_log[i]).flatten()
             if t_idx < int(n_geodesic_points * FRAC_TRAIN):
                 x_train.append(w_t.flatten())
