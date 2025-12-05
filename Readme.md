@@ -45,7 +45,7 @@ $$
 <img src="images/encoder_model.png" width="50%">
 
 ## Ideas for Extension of the Discrete Flow Matching Model of B. Boll et. al. (hd_flow_matching.py)
-A model that encompasses a lot concepts from differential/information geometry is the flow matching model from the paper "https://arxiv.org/pdf/2402.07846" of B. Boll et. al. It reduces the model training to learning a distance in tangent space between randomly sampled start distributions and data samples pulled to the manifold on factorizing discrete distributions.The geometrical aspects are handled completely in pre and postprocessing steps. 
+A model that encompasses a lot concepts from differential/information geometry is the flow matching model from the paper "https://arxiv.org/pdf/2402.07846" of B. Boll et. al. It reduces the model training to learning a distance in tangent space between randomly sampled start distributions and data samples pulled to the manifold of factorizing discrete distributions. The geometrical aspects are handled completely in pre and postprocessing steps. 
 
 Possible research questions:
 - How can it be extended to scenarios with interdepence between single probability variables
