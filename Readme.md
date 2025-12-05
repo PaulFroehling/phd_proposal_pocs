@@ -1,4 +1,4 @@
-# Ideas for Geometrically Enriched Deep Learning
+# Ideas for Geometric Regularization of Neural Networks on Riemannian Manifolds
 
 ## 1. Two Concepts for Geometric Regularization
 
