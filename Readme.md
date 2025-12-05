@@ -16,7 +16,7 @@ File: geodesic_sphere_nn.py
 One concept for regularizing models that learn geodesics on manifolds is to enforce a parametrization by radians while regularizing for constant speed.
 $$|| \dot{γ}(t)|| = constant$$
 
-<img src="images/geodesic_model.png" width="50%">
+<img src="images/geodesic_model.png" style="max-width: 60%; height: auto;">
 
 ### 2.2. Pullback Metric Regularization
 File: s2_encoder.py
