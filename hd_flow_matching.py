@@ -399,6 +399,8 @@ def integrate_flow(model:tf.keras.Model, n_geodesics:int, n_geodesic_points:int 
             p_ts.append(p_t_embed.copy())
         
         flows.append(p_ts)
+    for i in range(n_geodesic_points):
+        np.savetxt(f"animation_data/points_{i}.csv", np.array(flows)[:,i], delimiter=",")
     return np.array(flows)
 
 
@@ -422,9 +424,10 @@ x_train, vts_train, x_val, vts_val = load_training_and_validation_data()
 model, optimizer = define_model(LR)
 
 for ep in range(N_EPOCHS):
-    if ep>=350 and ep % 10 == 0:
-        LR*=0.99
+    if ep >= 350 and ep % 10 == 0:
+        LR *= 0.99
         optimizer.learning_rate.assign(LR)
+
     with tf.GradientTape() as tape:
         
         predicted_velocity_train = model(x_train)
