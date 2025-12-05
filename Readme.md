@@ -6,13 +6,13 @@ The idea of regularizing neuronal networks with concepts from differential geome
 
 
 
-### 2.1. Speed Regularization for Learning Geodesics Parametrized By Radians (geodesic_sphere_nn.py)
+### 1.1. Speed Regularization for Learning Geodesics Parametrized By Radians (geodesic_sphere_nn.py)
 One concept of regularizing models, learning geodesics on mannifolds, is to enforce parametrization by radians while regularizing for constant speed. 
 $$|| \dot{γ}(t)|| = constant$$
 
 <img src="images/geodesic_model.png" width="50%">
 
-### 2.2. Pullback Metric Regularization (s2_encoder.py)
+### 1.2. Pullback Metric Regularization (s2_encoder.py)
 The second concept for regularing a toy neural network is based on an encoder-like network, that transforms spherical polar coordinates to Cartesian coordinates in 3D. The regularization evalutes the pullback metric of the network against the $S^2$-metric tensor.
 
 
@@ -33,15 +33,15 @@ g_{pullback} =
 $$
 
 The pullback metric can then compared against the $S^2$ metric tensor:
-$$
 
+$$
 g_{S^2} =
 \begin{pmatrix}
 R^2 & 0 \\
 0 & R^2 sin^2\theta
 \end{pmatrix}
-
 $$
+
 <img src="images/encoder_model.png" width="50%">
 
 ## Ideas for Extension of the Discrete Flow Matching Model of B. Boll et. al. (hd_flow_matching.py)
