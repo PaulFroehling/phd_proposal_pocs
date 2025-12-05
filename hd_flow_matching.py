@@ -248,6 +248,7 @@ def apply_riemann_map(W:np.ndarray, v:np.ndarray) -> np.ndarray:
         R[i] = Wi * vi - Wi * inner
     return R
 
+
 def log_map(b:np.ndarray, x:np.ndarray) -> np.ndarray:
     """Logarithmic map, pushing a point x from the assignment manifold to the tangent space of b
 
@@ -264,12 +265,32 @@ def log_map(b:np.ndarray, x:np.ndarray) -> np.ndarray:
         v[i] = u - u.mean()              
     return v
 
+
 def calculate_q_beta(beta:np.ndarray, eta:float = 1e-2) -> np.ndarray:
+    """Drawing data samples (diracs) to the manifold, while encoding direction from bary center
+
+    Args:
+        beta (np.ndarray): Data sample
+        eta (float, optional): Small value of divergence. Defaults to 1e-2.
+
+    Returns:
+        np.ndarray: Target point for trainign
+    """    
     q_beta = eta*np.array([[0.5,0.5],[0.5,0.5]]) + (1-eta)*beta
 
     return q_beta
 
-def generate_target_dists(n_samples:int, barycenter:np.ndarray) -> np.ndarray:
+
+def generate_target_dists(n_samples:int, barycenter:np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Generates an array of target samples for geodesics
+
+    Args:
+        n_samples (int): Number of samples
+        barycenter (np.ndarray): Barycenter of the manifold as reference
+
+    Returns:
+        tuple[np.ndarray, np.ndarray]: Two arrays for target distributions and the corresponding logarithmic map
+    """   
     samples = sample_c2_n2_data(n_samples)
     target_dists = []
     log_target_dists = []
@@ -285,13 +306,31 @@ def generate_target_dists(n_samples:int, barycenter:np.ndarray) -> np.ndarray:
     
     return np.array(target_dists), np.array(log_target_dists)
 
+
 def compute_tangent_interpolation(v1:np.ndarray, v2:np.ndarray, t:int) -> np.ndarray:
+    """Computes linear interpolation in tangent space between v1 and v2
+
+    Args:
+        v1 (np.ndarray): Tagent vector 1
+        v2 (np.ndarray): Tangent vector 2
+        t (int): "Timestept" t
+
+    Returns:
+        np.ndarray: Resulting tangent vector for t
+    """    
     v1 = v1.flatten()
     v2 = v2.flatten()
     interp = v1 + t*(v2-v1)
     return interp.reshape(2,2)
 
-def generate_training_data(n_geodesics:int, n_geodesic_points:int) -> tuple[tf.Tensor, tf.Tensor]:
+
+def generate_training_data(n_geodesics:int, n_geodesic_points:int) -> None:
+    """Generates a new set of training and validation data
+
+    Args:
+        n_geodesics (int): Number of geodesics
+        n_geodesic_points (int): Number of points for each geodesic
+    """    
     x_train = []
     vts_train = []
     x_val = []
@@ -322,10 +361,29 @@ def generate_training_data(n_geodesics:int, n_geodesic_points:int) -> tuple[tf.T
 
 
 def log_state(ep:int, LR:float, mean_loss:tf.Tensor, val_loss:tf.Tensor, reg:tf.Tensor) -> None:
+    """Utility function for logging during training
+
+    Args:
+        ep (int): Epoche
+        LR (float): Learning Rate
+        mean_loss (tf.Tensor): Training Loss
+        val_loss (tf.Tensor): Validation Loss
+        reg (tf.Tensor): Regulariazion term
+    """    
     print(f"Ep: {ep} | Loss: {mean_loss:.5} | LR: {LR:.4} | Val_Loss: {val_loss:.4}| Reg: {reg:.4}")
 
 
 def integrate_flow(model:tf.keras.Model, n_geodesics:int, n_geodesic_points:int = 100):
+    """Generates an array of flows, by integrates the result from the model using a Euler integration
+
+    Args:
+        model (tf.keras.Model): Trained model
+        n_geodesics (int): Number of geodesics
+        n_geodesic_points (int, optional): Number of points per geodesic. Defaults to 100.
+
+    Returns:
+        _type_: _description_
+    """    
     dt = 1 / n_geodesic_points
     flows=[]
     barycenter = np.array([[0.5, 0.5], [0.5, 0.5]])
@@ -343,13 +401,24 @@ def integrate_flow(model:tf.keras.Model, n_geodesics:int, n_geodesic_points:int 
         flows.append(p_ts)
     return np.array(flows)
 
-def reg(predicted_velocity_train):
+
+def reg(predicted_velocity_train:tf.Tensor) -> tf.Tensor:
+    """Regularization approach forcing the model to learn vectors of sum 0
+
+    Args:
+        predicted_velocity_train (tf.Tensor): Model output
+
+    Returns:
+        tf.Tensor: Sum over components
+    """    
+
     sum1 = tf.reduce_mean(tf.nn.sigmoid(tf.reduce_sum(predicted_velocity_train[:,:2], axis=1)))
     sum2 = tf.reduce_mean(tf.nn.sigmoid(tf.reduce_sum(predicted_velocity_train[:,2:], axis=1)))
     return sum1 + sum2
 
-x_train, vts_train, x_val, vts_val = load_training_and_validation_data()
 
+#TRAINING LOOP
+x_train, vts_train, x_val, vts_val = load_training_and_validation_data()
 model, optimizer = define_model(LR)
 
 for ep in range(N_EPOCHS):
