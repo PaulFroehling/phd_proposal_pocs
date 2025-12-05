@@ -4,15 +4,23 @@
 
 The idea of regularizing neuronal networks with concepts from differential geometry targets the aspect that deep learning models often operate on high dimensional non-euclidean manifolds. Distinct regularizion functions should improve the learning process by enforcing distinct pattterns from differential geometry. 
 
+This repository contains two minimal proof-of-concept experiments demonstrating how geometric regularization can be used to improve learning dynamics of neural networks on Riemannian manifolds.
 
+Furthermore it contains an implementation of the toy model from "https://arxiv.org/pdf/2402.07846" and a set of ideas of how to extend this approach.
 
-### 1.1. Speed Regularization for Learning Geodesics Parametrized By Radians (geodesic_sphere_nn.py)
+## 2 Experiments
+
+### 2.1. Speed Regularization for Learning Geodesics Parametrized By Radians
+File: geodesic_sphere_nn.py
+
 One concept of regularizing models, learning geodesics on mannifolds, is to enforce parametrization by radians while regularizing for constant speed. 
 $$|| \dot{γ}(t)|| = constant$$
 
 <img src="images/geodesic_model.png" width="50%">
 
-### 1.2. Pullback Metric Regularization (s2_encoder.py)
+### 2.2. Pullback Metric Regularization
+File: s2_encoder.py
+
 The second concept for regularing a toy neural network is based on an encoder-like network, that transforms spherical polar coordinates to Cartesian coordinates in 3D. The regularization evalutes the pullback metric of the network against the $S^2$-metric tensor.
 
 
@@ -44,7 +52,9 @@ $$
 
 <img src="images/encoder_model.png" width="50%">
 
-## Ideas for Extension of the Discrete Flow Matching Model of B. Boll et. al. (hd_flow_matching.py)
+### 2.3 Ideas for Extension of the Discrete Flow Matching Model of B. Boll et. al.
+File:  hd_flow_matching.py
+
 A model that encompasses a lot concepts from differential/information geometry is the flow matching model from the paper "https://arxiv.org/pdf/2402.07846" of B. Boll et. al. It reduces the model training to learning a distance in tangent space between randomly sampled start distributions and data samples pulled to the manifold of factorizing discrete distributions. The geometrical aspects are handled completely in pre and postprocessing steps. 
 
 Possible research questions:
