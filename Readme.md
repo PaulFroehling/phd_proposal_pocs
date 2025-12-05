@@ -34,13 +34,13 @@ $$
 
 The pullback metric can then compared against the $S^2$ metric tensor:
 $$
-\begin{equation}
+
 g_{S^2} =
 \begin{pmatrix}
 R^2 & 0 \\
 0 & R^2 sin^2\theta
 \end{pmatrix}
-\end{equation}
+
 $$
 <img src="images/encoder_model.png" width="50%">
 
