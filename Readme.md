@@ -16,13 +16,13 @@ $$|| \dot{γ}(t)|| = constant$$
 The second concept for regularing a toy neural network is based on an encoder-like network, that transforms spherical polar coordinates to Cartesian coordinates in 3D. The regularization evalutes the pullback metric of the network against the $S^2$-metric tensor.
 
 
-$
+$$
 \begin{align}
 \partial_\phi f = \frac{f(\theta,\phi) - f(\theta, \phi + \delta)}{\delta }\\
 \partial_\theta f = \frac{f(\theta,\phi) - f(\theta + \delta, \phi)}{\delta}
 \end{align}
-$
-$
+$$
+$$
 \begin{equation}
 g_{pullback} =
 \begin{pmatrix}
@@ -30,10 +30,10 @@ g_{pullback} =
 \langle \partial_{\phi}f, \partial_{\theta}f \rangle & \langle \partial_{\phi}f, \partial_{\phi}f \rangle
 \end{pmatrix}
 \end{equation}
-$
+$$
 
 The pullback metric can then compared against the $S^2$ metric tensor:
-$
+$$
 \begin{equation}
 g_{S^2} =
 \begin{pmatrix}
@@ -41,7 +41,7 @@ R^2 & 0 \\
 0 & R^2 sin^2\theta
 \end{pmatrix}
 \end{equation}
-$
+$$
 <img src="images/encoder_model.png" width="50%">
 
 ## Ideas for Extension of the Discrete Flow Matching Model of B. Boll et. al. (hd_flow_matching.py)
