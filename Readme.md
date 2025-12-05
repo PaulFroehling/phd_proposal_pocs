@@ -50,7 +50,7 @@ R^2 & 0 \\
 \end{pmatrix}
 $$
 
-<img src="images/encoder_model.png" width="50%">
+<img src="images/encoder_model.png" style="max-width: 60%; height: auto;">
 
 ### 2.3 Ideas for Extension of the Discrete Flow Matching Model of (Boll et al., 2024)
 File:  hd_flow_matching.py
@@ -67,7 +67,7 @@ Possible research questions:
 - How can the model be conditioned?
 
 <figure>
-    <img src="images/3d_animation.gif" width="30%" caption="bla">
+    <img src="images/3d_animation.gif" style="max-width: 60%; height: auto;">
     <figcaption>Animation of multiple random samples flowing from start to target based on the minimal example from the paper. </figcaption>
 </figure>
 
