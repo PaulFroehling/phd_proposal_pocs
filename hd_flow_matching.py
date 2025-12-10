@@ -200,8 +200,8 @@ def exp_map(w:np.ndarray, v:np.ndarray) -> np.ndarray:
     Returns:
         np.ndarray: Resulting point on the manifold
     """    
-    exp_v1 = np.exp(v[0])
-    exp_v2 = np.exp(v[1])
+    exp_v1 = np.exp(v[0]/w[0])
+    exp_v2 = np.exp(v[1]/w[1])
     map_1 = (exp_v1 * w[0]) / np.dot(exp_v1,w[0])
     map_2 = (exp_v2 * w[1]) / np.dot(exp_v2,w[1])
     total_map = np.array([map_1, map_2])
@@ -399,8 +399,8 @@ def integrate_flow(model:tf.keras.Model, n_geodesics:int, n_geodesic_points:int 
             p_ts.append(p_t_embed.copy())
         
         flows.append(p_ts)
-    for i in range(n_geodesic_points):
-        np.savetxt(f"animation_data/points_{i}.csv", np.array(flows)[:,i], delimiter=",")
+    # for i in range(n_geodesic_points):
+    #     np.savetxt(f"animation_data/points_{i}.csv", np.array(flows)[:,i], delimiter=",")
     return np.array(flows)
 
 

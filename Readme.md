@@ -67,7 +67,7 @@ Possible research questions:
 - How can the model be conditioned?
 
 <figure>
-    <img src="images/3d_animation.gif" style="max-width: 60%; height: auto;">
+    <img src="images/3d_animation.gif" style="max-width: 40%; height: auto;">
     <figcaption>Animation of multiple random samples flowing from start to target based on the minimal example from the paper. </figcaption>
 </figure>
 
